@@ -1,0 +1,8 @@
+twitter sentiment analysis with kafka,spark and Kibana :
+
+https://github.com/BenSchr/Twitterstream-Sentiment-Analysis
+
+
+
+
+
