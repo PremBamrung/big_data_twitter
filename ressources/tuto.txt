@@ -2,7 +2,15 @@ twitter sentiment analysis with kafka,spark and Kibana :
 
 https://github.com/BenSchr/Twitterstream-Sentiment-Analysis
 
+launch Kafka and zookeeper server:
 
+kafka-server-start /usr/local/etc/kafka/server.properties
+
+zookeeper-server-start /usr/local/etc/kaf/zookeeper.properties
+
+Open bash on mac:
+
+open -e '.bash_profile'
 
 
 
