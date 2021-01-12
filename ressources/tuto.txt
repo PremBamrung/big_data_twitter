@@ -6,7 +6,7 @@ launch Kafka and zookeeper server:
 
 kafka-server-start /usr/local/etc/kafka/server.properties
 
-zookeeper-server-start /usr/local/etc/kaf/zookeeper.properties
+zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
 
 Open bash on mac:
 
