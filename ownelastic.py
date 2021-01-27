@@ -61,8 +61,9 @@ def createIndex(index):
         pass
 
 
-def sth2elastic(doc, index, type):
+def to_elastic(doc, index, type):
     esclient = getElastic()
+    createIndex(index)
     statcnt = 0
     actions = []
     for row in doc:

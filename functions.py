@@ -1,7 +1,6 @@
 import string
 import re
 from itertools import groupby
-import json
 from textblob import TextBlob
 from datetime import datetime
 import datefinder
