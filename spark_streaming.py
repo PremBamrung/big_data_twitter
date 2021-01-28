@@ -5,6 +5,7 @@ from pyspark.streaming.kafka import KafkaUtils
 from elasticsearch import Elasticsearch
 from pyspark.sql.functions import lit
 from pyspark.sql.functions import udf
+from pyspark.sql import functions as F
 from pyspark.sql.types import *
 import json
 import os
@@ -12,7 +13,9 @@ import functions as fn
 from datetime import datetime
 from ownelastic import to_elastic
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import nltk
 
+nltk.download("vader_lexicon")
 with open("hashtag.txt") as f:
     hashtag = f.read()
 
@@ -20,7 +23,7 @@ os.environ[
     "PYSPARK_SUBMIT_ARGS"
 ] = "--jars /home/prembamrung/Documents/Valdom/big_data_twitter/spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar pyspark-shell"
 
-
+"""
 def to_elastic(data):
     tweet = fn.get_tweet(data["text"])
     polarity, tweet_sentiment = fn.get_sentiment(tweet)
@@ -44,6 +47,7 @@ def to_elastic(data):
             "lang": lang,
         },
     )
+"""
 
 
 def getSqlContextInstance(sparkContext):
@@ -68,18 +72,23 @@ def process(time, rdd):
         if rdd.count() == 0:
             raise Exception("Empty")
         sqlContext = getSqlContextInstance(rdd.context)
-        df = sqlContext.read.json(rdd)
-        # df = df.filter("text not like 'RT @%'")
+        df = sqlContext.read.json(rdd, multiLine=True)
+
         if df.count() == 0:
             raise Exception("Empty")
         udf_func = udf(lambda x: dosentiment(x), returnType=StringType())
+        print(df.head(5))
         df = df.withColumn("sentiment", lit(udf_func(df.text)))
-        print(df.take(10))
+        # print(df.take(10))
         results = df.toJSON().map(lambda j: json.loads(j)).collect()
+        print("Sentiment done")
         for result in results:
-            result["date"] = datetime.strptime(result["date"], "%Y-%m-%d %H:%M:%S")
+            result["created_at"] = fn.get_date(result["created_at"])
+            print("date done")
             result["sentiment"] = json.loads(result["sentiment"])
+            print("sentiment loaded")
         to_elastic(results, "tweet_" + hashtag + "_index", "doc")
+        print("Send to elastic done")
     except Exception as e:
         print(e)
         pass
@@ -92,7 +101,7 @@ if __name__ == "__main__":
     sc = SparkContext(appName="TwitterStreaming")
 
     # Set the Batch Interval is 10 sec of Streaming Context
-    ssc = StreamingContext(sc, 4)
+    ssc = StreamingContext(sc, 6)
 
     # Create Kafka Stream to Consume Data Comes From Twitter Topic
     # localhost:2181 = Default Zookeeper Consumer Address
@@ -100,6 +109,8 @@ if __name__ == "__main__":
     kafkaStream = KafkaUtils.createStream(
         ssc, "localhost:2181", "spark-streaming", {"twitter_stream_" + hashtag: 1}
     )
+
+    kafkaStream.map(lambda v: v[1]).foreachRDD(process)
 
     # Parse Twitter Data as json
     parsed = kafkaStream.map(lambda v: json.loads(v[1]))
@@ -110,8 +121,8 @@ if __name__ == "__main__":
     )  # .reduceByKey(lambda x, y: x + y)
 
     # Print the User tweet counts
-    # author.pprint()
-    parsed.foreachRDD(process)
+    author.pprint()
+    # parsed.foreachRDD(process)
 
     # Start Execution of Streams
     ssc.start()

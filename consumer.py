@@ -40,7 +40,7 @@ def main():
                 "author_account_age": fn.get_age(dict_data["user"]["created_at"]),
                 "created_at": dict_data["created_at"],
                 "date": fn.get_date(dict_data["created_at"]),
-                "message": dict_data["text"],
+                "message": dict_data["t ext"],
                 "cleaned_message": fn.clean(dict_data["text"]),
                 "sentiment": tweet_sentiment,
                 "polarity": polarity,
