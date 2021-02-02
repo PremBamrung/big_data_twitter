@@ -23,32 +23,6 @@ os.environ[
     "PYSPARK_SUBMIT_ARGS"
 ] = "--jars /home/prembamrung/Documents/Valdom/big_data_twitter/spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar pyspark-shell"
 
-"""
-def to_elastic(data):
-    tweet = fn.get_tweet(data["text"])
-    polarity, tweet_sentiment = fn.get_sentiment(tweet)
-    lang = fn.detect_lang(tweet)
-
-    es.index(
-        index="tweet_es_" + hashtag + "_index",
-        doc_type="test_doc",
-        body={
-            "author": data["user"]["screen_name"],
-            "author_followers": data["user"]["followers_count"],
-            "author_statues": data["user"]["statuses_count"],
-            "author_verified": data["user"]["verified"],
-            "author_account_age": fn.get_age(data["user"]["created_at"]),
-            "created_at": data["created_at"],
-            "date": fn.get_date(data["created_at"]),
-            "message": data["text"],
-            "cleaned_message": fn.clean(data["text"]),
-            "sentiment": tweet_sentiment,
-            "polarity": polarity,
-            "lang": lang,
-        },
-    )
-"""
-
 
 def getSqlContextInstance(sparkContext):
     if "sqlContextSingletonInstance" not in globals():
@@ -77,18 +51,23 @@ def process(time, rdd):
         if df.count() == 0:
             raise Exception("Empty")
         udf_func = udf(lambda x: dosentiment(x), returnType=StringType())
-        print(df.head(5))
+        # print(df.head(5))
         df = df.withColumn("sentiment", lit(udf_func(df.text)))
         # print(df.take(10))
         results = df.toJSON().map(lambda j: json.loads(j)).collect()
-        print("Sentiment done")
+        # print("Sentiment done")
         for result in results:
             result["created_at"] = fn.get_date(result["created_at"])
-            print("date done")
+            result["cleaned_text"] = fn.clean(result["text"])
             result["sentiment"] = json.loads(result["sentiment"])
-            print("sentiment loaded")
+            polarity, tweet_sentiment = fn.get_sentiment(fn.get_tweet(result["text"]))
+            result["sentiment_function"] = tweet_sentiment
+            result["polarity"] = polarity
+            result["source"] = fn.find_device(result["source"])
+            result["user_age"] = fn.get_age(result["user"]["created_at"])
+            # print("sentiment loaded")
         to_elastic(results, "tweet_" + hashtag + "_index", "doc")
-        print("Send to elastic done")
+        # print("Send to elastic done")
     except Exception as e:
         print(e)
         pass
