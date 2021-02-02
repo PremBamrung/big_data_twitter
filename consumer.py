@@ -30,7 +30,7 @@ def main():
 
         # add text & sentiment to es
         es.index(
-            index="tweet_es_" + hashtag + "_index",
+            index="tweet_test_" + hashtag + "_index",
             doc_type="test_doc",
             body={
                 "author": dict_data["user"]["screen_name"],
@@ -40,7 +40,7 @@ def main():
                 "author_account_age": fn.get_age(dict_data["user"]["created_at"]),
                 "created_at": dict_data["created_at"],
                 "date": fn.get_date(dict_data["created_at"]),
-                "message": dict_data["t ext"],
+                "message": dict_data["text"],
                 "cleaned_message": fn.clean(dict_data["text"]),
                 "sentiment": tweet_sentiment,
                 "polarity": polarity,

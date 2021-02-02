@@ -3,6 +3,8 @@ import tweepy
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
+import json
+import geocoder
 
 access_token = "1338852601799041024-LMXAYz8JbzRbfmAVMSLuX8jocXqQfI"
 access_secret = "cBwG5uYFWnaOnLiRN1UIkwdcQAtXawhsKiKC9u9C54cRS"
@@ -20,6 +22,21 @@ auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 
 api = tweepy.API(auth)
+
+
+def top_trends(place = 'France'):
+               
+    # Trends for Specific Country
+    g = geocoder.osm(place) # getting object that has location's latitude and longitude
+
+    closest_loc = api.trends_closest(g.lat, g.lng)
+    print(closest_loc[0])
+    trends = api.trends_place(closest_loc[0]['woeid'])
+    # writing a JSON file that has the latest trends for that location
+    with open("twitter_"+place+"_trend.json","w") as wp:
+        wp.write(json.dumps(trends, indent=1))
+    
+    return True
 
 
 # Twitter Stream Listener
@@ -43,10 +60,11 @@ class KafkaPushListener(StreamListener):
         return True
 
 
-# Twitter Stream Config
-twitter_stream = Stream(auth, KafkaPushListener())
+top_trends()
+# # Twitter Stream Config
+# twitter_stream = Stream(auth, KafkaPushListener())
 
-hashStr = "#" + hashtag
+# hashStr = "#" + hashtag
 
-# Produce Data that has trump hashtag (Tweets)
-twitter_stream.filter(track=[hashStr])
+# # Produce Data that has trump hashtag (Tweets)
+# twitter_stream.filter(track=[hashStr])
