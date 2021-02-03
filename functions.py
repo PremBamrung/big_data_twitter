@@ -10,6 +10,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 nltk.download("stopwords")
+nltk.download('punkt')
 
 
 PUNCT_TO_REMOVE = string.punctuation

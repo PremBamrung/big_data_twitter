@@ -77,8 +77,10 @@ if __name__ == "__main__":
 
     es = Elasticsearch(hosts=["localhost"], port=9200)
     # Create Spark Context to Connect Spark Cluster
-    sc = SparkContext(appName="TwitterStreaming")
-
+    conf = SparkConf()
+    conf.setAppName("TwitterStreaming").set("spark.io.compression.codec", "snappy")
+    # Create Spark Context to Connect Spark Cluster
+    sc = SparkContext(conf=conf)
     # Set the Batch Interval is 10 sec of Streaming Context
     ssc = StreamingContext(sc, 6)
 
