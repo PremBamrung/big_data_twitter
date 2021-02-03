@@ -18,10 +18,10 @@ import nltk
 nltk.download("vader_lexicon")
 with open("hashtag.txt") as f:
     hashtag = f.read()
-
+workdir = os.getcwd()
 os.environ[
     "PYSPARK_SUBMIT_ARGS"
-] = "--jars /home/prembamrung/Documents/Valdom/big_data_twitter/spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar pyspark-shell"
+] = f"--jars {workdir}/spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar pyspark-shell"
 
 
 def getSqlContextInstance(sparkContext):
