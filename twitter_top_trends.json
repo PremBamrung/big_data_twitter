@@ -1,0 +1,350 @@
+[
+ {
+  "trends": [
+   {
+    "name": "#GoldenGlobes",
+    "url": "http://twitter.com/search?q=%23GoldenGlobes",
+    "promoted_content": null,
+    "query": "%23GoldenGlobes",
+    "tweet_volume": 96480
+   },
+   {
+    "name": "Emily in Paris",
+    "url": "http://twitter.com/search?q=%22Emily+in+Paris%22",
+    "promoted_content": null,
+    "query": "%22Emily+in+Paris%22",
+    "tweet_volume": 15612
+   },
+   {
+    "name": "#NGWSD",
+    "url": "http://twitter.com/search?q=%23NGWSD",
+    "promoted_content": null,
+    "query": "%23NGWSD",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Trey Songz",
+    "url": "http://twitter.com/search?q=%22Trey+Songz%22",
+    "promoted_content": null,
+    "query": "%22Trey+Songz%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "#SFFpit",
+    "url": "http://twitter.com/search?q=%23SFFpit",
+    "promoted_content": null,
+    "query": "%23SFFpit",
+    "tweet_volume": 35748
+   },
+   {
+    "name": "Morgan Wallen",
+    "url": "http://twitter.com/search?q=%22Morgan+Wallen%22",
+    "promoted_content": null,
+    "query": "%22Morgan+Wallen%22",
+    "tweet_volume": 14510
+   },
+   {
+    "name": "I May Destroy You",
+    "url": "http://twitter.com/search?q=%22I+May+Destroy+You%22",
+    "promoted_content": null,
+    "query": "%22I+May+Destroy+You%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "#WorldReadAloudDay",
+    "url": "http://twitter.com/search?q=%23WorldReadAloudDay",
+    "promoted_content": null,
+    "query": "%23WorldReadAloudDay",
+    "tweet_volume": 0
+   },
+   {
+    "name": "#wednesdaythought",
+    "url": "http://twitter.com/search?q=%23wednesdaythought",
+    "promoted_content": null,
+    "query": "%23wednesdaythought",
+    "tweet_volume": 37317
+   },
+   {
+    "name": "James Corden",
+    "url": "http://twitter.com/search?q=%22James+Corden%22",
+    "promoted_content": null,
+    "query": "%22James+Corden%22",
+    "tweet_volume": 10003
+   },
+   {
+    "name": "Miss Piggy",
+    "url": "http://twitter.com/search?q=%22Miss+Piggy%22",
+    "promoted_content": null,
+    "query": "%22Miss+Piggy%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "HFPA",
+    "url": "http://twitter.com/search?q=HFPA",
+    "promoted_content": null,
+    "query": "HFPA",
+    "tweet_volume": 0
+   },
+   {
+    "name": "The Prom",
+    "url": "http://twitter.com/search?q=%22The+Prom%22",
+    "promoted_content": null,
+    "query": "%22The+Prom%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Da 5 Bloods",
+    "url": "http://twitter.com/search?q=%22Da+5+Bloods%22",
+    "promoted_content": null,
+    "query": "%22Da+5+Bloods%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Michaela Coel",
+    "url": "http://twitter.com/search?q=%22Michaela+Coel%22",
+    "promoted_content": null,
+    "query": "%22Michaela+Coel%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Delroy Lindo",
+    "url": "http://twitter.com/search?q=%22Delroy+Lindo%22",
+    "promoted_content": null,
+    "query": "%22Delroy+Lindo%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Brian Sicknick",
+    "url": "http://twitter.com/search?q=%22Brian+Sicknick%22",
+    "promoted_content": null,
+    "query": "%22Brian+Sicknick%22",
+    "tweet_volume": 140588
+   },
+   {
+    "name": "Lovecraft Country",
+    "url": "http://twitter.com/search?q=%22Lovecraft+Country%22",
+    "promoted_content": null,
+    "query": "%22Lovecraft+Country%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Best Director",
+    "url": "http://twitter.com/search?q=%22Best+Director%22",
+    "promoted_content": null,
+    "query": "%22Best+Director%22",
+    "tweet_volume": 10343
+   },
+   {
+    "name": "Hazard",
+    "url": "http://twitter.com/search?q=Hazard",
+    "promoted_content": null,
+    "query": "Hazard",
+    "tweet_volume": 52359
+   },
+   {
+    "name": "The Weeknd",
+    "url": "http://twitter.com/search?q=%22The+Weeknd%22",
+    "promoted_content": null,
+    "query": "%22The+Weeknd%22",
+    "tweet_volume": 20530
+   },
+   {
+    "name": "Steven Yeun",
+    "url": "http://twitter.com/search?q=%22Steven+Yeun%22",
+    "promoted_content": null,
+    "query": "%22Steven+Yeun%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Jurnee Smollett",
+    "url": "http://twitter.com/search?q=%22Jurnee+Smollett%22",
+    "promoted_content": null,
+    "query": "%22Jurnee+Smollett%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Mank",
+    "url": "http://twitter.com/search?q=Mank",
+    "promoted_content": null,
+    "query": "Mank",
+    "tweet_volume": 11296
+   },
+   {
+    "name": "Minari",
+    "url": "http://twitter.com/search?q=Minari",
+    "promoted_content": null,
+    "query": "Minari",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Randy Rainbow",
+    "url": "http://twitter.com/search?q=%22Randy+Rainbow%22",
+    "promoted_content": null,
+    "query": "%22Randy+Rainbow%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Kudlow",
+    "url": "http://twitter.com/search?q=Kudlow",
+    "promoted_content": null,
+    "query": "Kudlow",
+    "tweet_volume": 0
+   },
+   {
+    "name": "anya",
+    "url": "http://twitter.com/search?q=anya",
+    "promoted_content": null,
+    "query": "anya",
+    "tweet_volume": 22383
+   },
+   {
+    "name": "Hamilton",
+    "url": "http://twitter.com/search?q=Hamilton",
+    "promoted_content": null,
+    "query": "Hamilton",
+    "tweet_volume": 21642
+   },
+   {
+    "name": "Hump Day",
+    "url": "http://twitter.com/search?q=%22Hump+Day%22",
+    "promoted_content": null,
+    "query": "%22Hump+Day%22",
+    "tweet_volume": 14483
+   },
+   {
+    "name": "Buddy Holly",
+    "url": "http://twitter.com/search?q=%22Buddy+Holly%22",
+    "promoted_content": null,
+    "query": "%22Buddy+Holly%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "The Flight Attendant",
+    "url": "http://twitter.com/search?q=%22The+Flight+Attendant%22",
+    "promoted_content": null,
+    "query": "%22The+Flight+Attendant%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Chadwick",
+    "url": "http://twitter.com/search?q=Chadwick",
+    "promoted_content": null,
+    "query": "Chadwick",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Regina King",
+    "url": "http://twitter.com/search?q=%22Regina+King%22",
+    "promoted_content": null,
+    "query": "%22Regina+King%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Blue Lives Matter",
+    "url": "http://twitter.com/search?q=%22Blue+Lives+Matter%22",
+    "promoted_content": null,
+    "query": "%22Blue+Lives+Matter%22",
+    "tweet_volume": 37112
+   },
+   {
+    "name": "Ratched",
+    "url": "http://twitter.com/search?q=Ratched",
+    "promoted_content": null,
+    "query": "Ratched",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Hollywood Foreign Press",
+    "url": "http://twitter.com/search?q=%22Hollywood+Foreign+Press%22",
+    "promoted_content": null,
+    "query": "%22Hollywood+Foreign+Press%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Ted Lasso",
+    "url": "http://twitter.com/search?q=%22Ted+Lasso%22",
+    "promoted_content": null,
+    "query": "%22Ted+Lasso%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Lily Collins",
+    "url": "http://twitter.com/search?q=%22Lily+Collins%22",
+    "promoted_content": null,
+    "query": "%22Lily+Collins%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Joe Manchin",
+    "url": "http://twitter.com/search?q=%22Joe+Manchin%22",
+    "promoted_content": null,
+    "query": "%22Joe+Manchin%22",
+    "tweet_volume": 22777
+   },
+   {
+    "name": "Ryan Day",
+    "url": "http://twitter.com/search?q=%22Ryan+Day%22",
+    "promoted_content": null,
+    "query": "%22Ryan+Day%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Oscars",
+    "url": "http://twitter.com/search?q=Oscars",
+    "promoted_content": null,
+    "query": "Oscars",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Lil Uzi",
+    "url": "http://twitter.com/search?q=%22Lil+Uzi%22",
+    "promoted_content": null,
+    "query": "%22Lil+Uzi%22",
+    "tweet_volume": 12443
+   },
+   {
+    "name": "Chase Anderson",
+    "url": "http://twitter.com/search?q=%22Chase+Anderson%22",
+    "promoted_content": null,
+    "query": "%22Chase+Anderson%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Officer Sicknick",
+    "url": "http://twitter.com/search?q=%22Officer+Sicknick%22",
+    "promoted_content": null,
+    "query": "%22Officer+Sicknick%22",
+    "tweet_volume": 208847
+   },
+   {
+    "name": "Borat",
+    "url": "http://twitter.com/search?q=Borat",
+    "promoted_content": null,
+    "query": "Borat",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Ma Rainey",
+    "url": "http://twitter.com/search?q=%22Ma+Rainey%22",
+    "promoted_content": null,
+    "query": "%22Ma+Rainey%22",
+    "tweet_volume": 0
+   },
+   {
+    "name": "Palm Springs",
+    "url": "http://twitter.com/search?q=%22Palm+Springs%22",
+    "promoted_content": null,
+    "query": "%22Palm+Springs%22",
+    "tweet_volume": 0
+   }
+  ],
+  "as_of": "2021-02-03T16:14:28Z",
+  "created_at": "2021-02-02T16:26:51Z",
+  "locations": [
+   {
+    "name": "Denver",
+    "woeid": 2391279
+   }
+  ]
+ }
+]

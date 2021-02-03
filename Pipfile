@@ -29,6 +29,7 @@ tweepy = "==3.9.0"
 urllib3 = "==1.26.2"
 PySocks = "==1.7.1"
 geocoder = "*"
+numpy = "*"
 
 [dev-packages]
 

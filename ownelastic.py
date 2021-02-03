@@ -67,6 +67,7 @@ def to_elastic(doc, index, type):
     statcnt = 0
     actions = []
     for row in doc:
+
         actions.append(
             {"_op_type": "index", "_index": index, "_type": type, "_source": row}
         )

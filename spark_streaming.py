@@ -11,11 +11,10 @@ import json
 import os
 import functions as fn
 from datetime import datetime
-from ownelastic import to_elastic
+from ownelastic import to_elastic,readLinedJSON
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
-
-
+import numpy as np
 
 nltk.download("vader_lexicon")
 with open("hashtag.txt") as f:
@@ -30,7 +29,7 @@ headers = {
 }
 
 resp = requests.put(
-    'http://localhost:9200/tweet_'+hashtag+'_index/_settings',
+    'http://localhost:9200/main_index/_settings',
     headers=headers,
     data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
 )
@@ -60,6 +59,30 @@ def dosentiment(tweet):
 
     return json.dumps(scores)
 
+def send_top_trends(filename):
+    #trends = readLinedJSON(filename)
+    
+    with open(filename) as f:
+        trends = json.load(f)  
+        print('trends[0]',trends[0])
+        print('\n')
+        print('trends',trends)
+    to_elastic(trends[0], "tweet_trends_index", "doc")
+    return True
+    
+def find_top_topics(n=3,file_name = "twitter_top_trends.json"):
+    with open(file_name) as f:
+        data = json.load(f)
+    max_volumes = []
+    for ind,value in enumerate(data[0]['trends']):
+                  
+        max_volumes+=[value['tweet_volume']]
+    indices_sorted = np.argsort(max_volumes)
+    top_topics=[]
+    for i in (indices_sorted[::-1])[:n]:
+        top_topics+=[data[0]['trends'][i]['name']]
+    return top_topics
+
 
 def process(time, rdd):
     
@@ -80,6 +103,7 @@ def process(time, rdd):
         results = df.toJSON().map(lambda j: json.loads(j)).collect()
         print("Sentiment done")
         for result in results:
+            
             result["created_at"] = fn.get_date(result["created_at"])
             result["cleaned_text"] = fn.clean(result["text"])
             result["sentiment"] = json.loads(result["sentiment"])
@@ -88,16 +112,23 @@ def process(time, rdd):
             result["polarity"] = polarity
             result["source"] = fn.find_device(result["source"])
             result["user_age"] = fn.get_age(result["user"]["created_at"])
+            for topic in top_topics:
+                
+                if topic in result['text']:
+                    
+                    result['topic'] = topic
+                    print(result['topic'])
+                
+            
             print("sentiment loaded")
-        to_elastic(results, "tweet_" + hashtag + "_index", "doc")
-        print("Send to elastic done")
+        to_elastic(results, "main_index", "doc")
     except Exception as e:
         print(e)
         pass
 
 
 if __name__ == "__main__":
-
+    
     es = Elasticsearch(hosts=["localhost"], port=9200)
     # Create Spark Context to Connect Spark Cluster
     conf = SparkConf()
@@ -111,10 +142,23 @@ if __name__ == "__main__":
     # localhost:2181 = Default Zookeeper Consumer Address
 
     kafkaStream = KafkaUtils.createStream(
-        ssc, "localhost:2181", "spark-streaming", {"twitter_stream_" + hashtag: 1}
+        ssc, "localhost:2181", "spark-streaming", {"twitter_fullstream": 1}
     )
 
+    
+    
+    # os.system('curl -XDELETE localhost:9200/tweet_vaccine_index')
+    os.system('curl -XDELETE localhost:9200/main_index')
+    
+    # print('indexes deleted from elastic')
+    # send_top_trends('twitter_top_trends.json')
+    # print('trends sent to elastic')
+    
+    print('ici')
+    top_topics = find_top_topics()
+    print(top_topics)
     kafkaStream.map(lambda v: v[1]).foreachRDD(process)
+    
 
     print('process done')
     # Parse Twitter Data as json
