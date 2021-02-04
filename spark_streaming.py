@@ -11,7 +11,7 @@ import json
 import os
 import functions as fn
 from datetime import datetime
-from ownelastic import to_elastic,readLinedJSON
+from ownelastic import to_elastic,readLinedJSON,createIndex
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 import numpy as np
@@ -24,18 +24,7 @@ with open("hashtag.txt") as f:
 
 import requests
 
-headers = {
-    "Content-Type": "application/json",
-}
 
-resp = requests.put(
-    'http://localhost:9200/main_index/_settings',
-    headers=headers,
-    data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
-)
-
-print(f"\nHTTP code: {resp.status_code} -- response: {resp}\n")
-print(f"Response text\n{resp.text}")
 
 
 
@@ -122,6 +111,8 @@ def process(time, rdd):
             
             print("sentiment loaded")
         to_elastic(results, "main_index", "doc")
+        
+        print('sent to elastic')
     except Exception as e:
         print(e)
         pass
@@ -129,7 +120,28 @@ def process(time, rdd):
 
 if __name__ == "__main__":
     
+    
+
+    
     es = Elasticsearch(hosts=["localhost"], port=9200)
+    os.system('curl -XDELETE localhost:9200/main_index')
+    
+    
+    createIndex('main_index')
+    
+    headers = {
+    "Content-Type": "application/json",
+    }
+    
+    resp = requests.put(
+        'http://localhost:9200/main_index/_settings',
+        headers=headers,
+        data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
+    )
+    
+    print(f"\nHTTP code: {resp.status_code} -- response: {resp}\n")
+    print(f"Response text\n{resp.text}")
+    
     # Create Spark Context to Connect Spark Cluster
     conf = SparkConf()
     conf.setAppName('TwitterStreaming').set("spark.io.compression.codec", "snappy")
@@ -148,13 +160,12 @@ if __name__ == "__main__":
     
     
     # os.system('curl -XDELETE localhost:9200/tweet_vaccine_index')
-    os.system('curl -XDELETE localhost:9200/main_index')
+    
     
     # print('indexes deleted from elastic')
     # send_top_trends('twitter_top_trends.json')
     # print('trends sent to elastic')
     
-    print('ici')
     top_topics = find_top_topics()
     print(top_topics)
     kafkaStream.map(lambda v: v[1]).foreachRDD(process)

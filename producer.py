@@ -26,7 +26,7 @@ auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
 
-def top_trends(place = 'USA'):
+def top_trends(place = 'WorldWide'):
                
     # Trends for Specific Country
     g = geocoder.osm(place) # getting object that has location's latitude and longitude
