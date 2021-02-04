@@ -101,6 +101,12 @@ def process(time, rdd):
             result["polarity"] = polarity
             result["source"] = fn.find_device(result["source"])
             result["user_age"] = fn.get_age(result["user"]["created_at"])
+            # coords = result['coordinates']
+            # if coords is not None:
+            #     lon = coords['coordinates'][0]
+            #     lat = coords['coordinates'][1]
+            #     result["custom_location"] = json()
+                
             for topic in top_topics:
                 
                 if topic in result['text']:

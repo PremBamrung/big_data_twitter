@@ -53,7 +53,6 @@ def top_trends(place = 'WorldWide'):
     return True
 
 
-
 def find_top_topics(n=3,file_name = "twitter_top_trends.json"):
     with open(file_name) as f:
         data = json.load(f)
