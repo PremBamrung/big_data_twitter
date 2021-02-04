@@ -12,10 +12,11 @@ import json
 import os
 import functions as fn
 from datetime import datetime
-from ownelastic import to_elastic
+from ownelastic import to_elastic, createIndex
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 import requests
+import numpy as np
 
 nltk.download("vader_lexicon")
 
@@ -28,19 +29,22 @@ os.environ[
     "PYSPARK_SUBMIT_ARGS"
 ] = f"--jars {workdir}/spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar pyspark-shell"
 
-headers = {
-    "Content-Type": "application/json",
-}
 
-resp = requests.put(
-    f"http://localhost:9200/tweet_%7Bhashtag%7D_index/_settings",
-    headers=headers,
-    data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
-)
+def upgrade_fields():
+    headers = {
+        "Content-Type": "application/json",
+    }
 
-print(f"\nHTTP code: {resp.status_code} -- response: {resp}\n")
+    resp = requests.put(
+        f"http://localhost:9200/tweet_%7Bhashtag%7D_index/_settings",
+        headers=headers,
+        data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
+    )
 
-print(f"Response text\n{resp.text}")
+    print(f"\nHTTP code: {resp.status_code} -- response: {resp}\n")
+
+    print(f"Response text\n{resp.text}")
+    return resp
 
 
 def getSqlContextInstance(sparkContext):
@@ -57,6 +61,32 @@ def dosentiment(tweet):
         scores[k] += ss[k]
 
     return json.dumps(scores)
+
+
+def send_top_trends(filename):
+    # trends = readLinedJSON(filename)
+
+    with open(filename) as f:
+        trends = json.load(f)
+        print("trends[0]", trends[0])
+        print("\n")
+        print("trends", trends)
+    to_elastic(trends[0], "tweet_trends_index", "doc")
+    return True
+
+
+def find_top_topics(n=3, file_name="twitter_top_trends.json"):
+    with open(file_name) as f:
+        data = json.load(f)
+    max_volumes = []
+    for ind, value in enumerate(data[0]["trends"]):
+
+        max_volumes += [value["tweet_volume"]]
+    indices_sorted = np.argsort(max_volumes)
+    top_topics = []
+    for i in (indices_sorted[::-1])[:n]:
+        top_topics += [data[0]["trends"][i]["name"]]
+    return top_topics
 
 
 def process(time, rdd):
@@ -84,8 +114,12 @@ def process(time, rdd):
             result["polarity"] = polarity
             result["source"] = fn.find_device(result["source"])
             result["user_age"] = fn.get_age(result["user"]["created_at"])
+            for topic in top_topics:
+                if topic in result["text"]:
+                    result["topic"] = topic
+                    print(result["topic"])
             # print("sentiment loaded")
-        to_elastic(results, "tweet_" + hashtag + "_index", "doc")
+        to_elastic(results, "main_index", "doc")
         # print("Send to elastic done")
     except Exception as e:
         print(e)
@@ -95,6 +129,11 @@ def process(time, rdd):
 if __name__ == "__main__":
 
     es = Elasticsearch(hosts=["localhost"], port=9200)
+
+    os.system("curl -XDELETE localhost:9200/main_index")
+    createIndex("main_index")
+    upgrade_fields()
+
     # Create Spark Context to Connect Spark Cluster
     conf = SparkConf()
     conf.setAppName("TwitterStreaming").set("spark.io.compression.codec", "snappy")
@@ -112,6 +151,8 @@ if __name__ == "__main__":
 
     kafkaStream.map(lambda v: v[1]).foreachRDD(process)
 
+    top_topics = find_top_topics()
+    print(top_topics)
     # Parse Twitter Data as json
     parsed = kafkaStream.map(lambda v: json.loads(v[1]))
 
