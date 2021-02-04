@@ -1,4 +1,5 @@
 from pyspark import SparkContext
+from pyspark import SparkConf
 from pyspark.sql import *
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
@@ -14,14 +15,32 @@ from datetime import datetime
 from ownelastic import to_elastic
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
+import requests
 
 nltk.download("vader_lexicon")
+
 with open("hashtag.txt") as f:
     hashtag = f.read()
+
 workdir = os.getcwd()
+
 os.environ[
     "PYSPARK_SUBMIT_ARGS"
 ] = f"--jars {workdir}/spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar pyspark-shell"
+
+headers = {
+    "Content-Type": "application/json",
+}
+
+resp = requests.put(
+    f"http://localhost:9200/tweet_%7Bhashtag%7D_index/_settings",
+    headers=headers,
+    data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
+)
+
+print(f"\nHTTP code: {resp.status_code} -- response: {resp}\n")
+
+print(f"Response text\n{resp.text}")
 
 
 def getSqlContextInstance(sparkContext):

@@ -2,10 +2,8 @@ import os
 import time
 
 
-zookeeper = "zookeeper-server-start.sh ~/intergiciels/kafka_2.13-2.7.0/config/zookeeper.properties &"
-kafka = (
-    "kafka-server-start.sh ~/intergiciels/kafka_2.13-2.7.0/config/server.properties &"
-)
+zookeeper = "zookeeper-server-start.sh ~/logiciels/kafka_2.13-2.7.0/config/zookeeper.properties &"
+kafka = "kafka-server-start.sh ~/logiciels/kafka_2.13-2.7.0/config/server.properties &"
 elasticsearch = "elasticsearch-7.10.1/bin/elasticsearch &"
 kibana = "kibana-7.10.1-linux-x86_64/bin/kibana"
 
