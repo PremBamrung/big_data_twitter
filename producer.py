@@ -75,7 +75,7 @@ class KafkaPushListener(StreamListener):
         # Producer produces data for consumer
         # Data comes from Twitter
         self.producer.send("twitter_stream_" + hashtag, data.encode("utf-8"))
-        print(data)
+        # print(data)
         return True
 
     def on_error(self, status):
@@ -83,14 +83,20 @@ class KafkaPushListener(StreamListener):
         return True
 
 
-top_trends()
-top_topics = find_top_topics()
-print(top_topics)
-# Twitter Stream Config
-twitter_stream = Stream(auth, KafkaPushListener())
+def main():
+    top_trends()
+    top_topics = find_top_topics()
+    print(top_topics)
+    # Twitter Stream Config
+    twitter_stream = Stream(auth, KafkaPushListener())
 
-hashStr = "#" + hashtag
+    # hashStr = "#" + hashtag
 
-# Produce Data that has trump hashtag (Tweets)
-twitter_stream.filter(track=top_topics)
-# twitter_stream.filter(track=[hashStr])
+    # Produce Data that has trump hashtag (Tweets)
+    twitter_stream.filter(track=top_topics)
+    # twitter_stream.filter(track=[hashStr])
+    return None
+
+
+if __name__ == "__main__":
+    main()

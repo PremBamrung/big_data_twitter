@@ -1,0 +1,1 @@
+sudo docker build --force-rm=True --tag=stream_tweet_im .

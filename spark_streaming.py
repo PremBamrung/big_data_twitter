@@ -36,7 +36,7 @@ def upgrade_fields():
     }
 
     resp = requests.put(
-        f"http://localhost:9200/tweet_%7Bhashtag%7D_index/_settings",
+        f"http://localhost:9200/main_index/_settings",
         headers=headers,
         data='{"index": {"mapping": {"total_fields": {"limit": "2000"}}}}',
     )
@@ -117,7 +117,7 @@ def process(time, rdd):
             for topic in top_topics:
                 if topic in result["text"]:
                     result["topic"] = topic
-                    print(result["topic"])
+                    # print(result["topic"])
             # print("sentiment loaded")
         to_elastic(results, "main_index", "doc")
         # print("Send to elastic done")
@@ -148,11 +148,10 @@ if __name__ == "__main__":
     kafkaStream = KafkaUtils.createStream(
         ssc, "localhost:2181", "spark-streaming", {"twitter_stream_" + hashtag: 1}
     )
-
+    top_topics = find_top_topics()
+    # print(top_topics)
     kafkaStream.map(lambda v: v[1]).foreachRDD(process)
 
-    top_topics = find_top_topics()
-    print(top_topics)
     # Parse Twitter Data as json
     parsed = kafkaStream.map(lambda v: json.loads(v[1]))
 
