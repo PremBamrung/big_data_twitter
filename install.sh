@@ -1,5 +1,5 @@
 workdir=$(pwd)
-cd 
+cd
 mkdir logiciels
 cd logiciels/
 wget https://apache.mirrors.benatherton.com/spark/spark-2.4.7/spark-2.4.7-bin-hadoop2.7.tgz

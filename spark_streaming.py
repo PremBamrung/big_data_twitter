@@ -153,7 +153,7 @@ if __name__ == "__main__":
     kafkaStream = KafkaUtils.createStream(
         ssc, "localhost:2181", "spark-streaming", {"twitter_stream_" + hashtag: 1}
     )
-    top_topics = find_top_topics()
+    top_topics = find_top_topics(n=3)
     # print(top_topics)
     kafkaStream.map(lambda v: v[1]).foreachRDD(process)
 

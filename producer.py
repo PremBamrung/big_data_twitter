@@ -31,7 +31,7 @@ def top_trends(place="WorldWide"):
     g = geocoder.osm(place)  # getting object that has location's latitude and longitude
 
     closest_loc = api.trends_closest(g.lat, g.lng)
-    print(closest_loc[0])
+    # print(closest_loc[0])
     # trends = api.trends_place(closest_loc[0]["woeid"])
     trends = api.trends_place(1)
 
@@ -90,17 +90,17 @@ class KafkaPushListener(StreamListener):
 def main():
 
     top_trends()
-    top_topics = find_top_topics(n=5)
+    top_topics = find_top_topics(n=3)
     # Twitter Stream Config
     twitter_stream = Stream(auth, KafkaPushListener())
 
-    hashStr = "#" + hashtag
+    # hashStr = "#" + hashtag
     # top_topics.append(hashtag)
     print(top_topics)
 
     # Produce Data that has trump hashtag (Tweets)
-    twitter_stream.filter(track=[hashStr])
-    # twitter_stream.filter(track=top_topics)
+    # twitter_stream.filter(track=[hashStr])
+    twitter_stream.filter(track=top_topics)
     # twitter_stream.filter(track=["SuperBowl", "OMPSG", "Tigres"])
 
     return None
