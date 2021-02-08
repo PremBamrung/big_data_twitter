@@ -32,7 +32,8 @@ def top_trends(place="WorldWide"):
 
     closest_loc = api.trends_closest(g.lat, g.lng)
     print(closest_loc[0])
-    trends = api.trends_place(closest_loc[0]["woeid"])
+    # trends = api.trends_place(closest_loc[0]["woeid"])
+    trends = api.trends_place(1)
 
     for ind, value in enumerate(trends[0]["trends"]):
 
@@ -67,6 +68,7 @@ class KafkaPushListener(StreamListener):
     def __init__(self):
         # localhost:9092 = Default Zookeeper Producer Host and Port Adresses
         self.producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
+        self.data = 0
 
     # Get Producer that has topic name is Twitter
     # self.producer = self.client.topics[bytes("twitter")].get_producer()
@@ -76,6 +78,8 @@ class KafkaPushListener(StreamListener):
         # Data comes from Twitter
         self.producer.send("twitter_stream_" + hashtag, data.encode("utf-8"))
         # print(data)
+        self.data += 1
+        print(f"\r Data : {self.data}", end="")
         return True
 
     def on_error(self, status):
@@ -84,17 +88,21 @@ class KafkaPushListener(StreamListener):
 
 
 def main():
+
     top_trends()
-    top_topics = find_top_topics()
-    print(top_topics)
+    top_topics = find_top_topics(n=5)
     # Twitter Stream Config
     twitter_stream = Stream(auth, KafkaPushListener())
 
-    # hashStr = "#" + hashtag
+    hashStr = "#" + hashtag
+    # top_topics.append(hashtag)
+    print(top_topics)
 
     # Produce Data that has trump hashtag (Tweets)
-    twitter_stream.filter(track=top_topics)
-    # twitter_stream.filter(track=[hashStr])
+    twitter_stream.filter(track=[hashStr])
+    # twitter_stream.filter(track=top_topics)
+    # twitter_stream.filter(track=["SuperBowl", "OMPSG", "Tigres"])
+
     return None
 
 

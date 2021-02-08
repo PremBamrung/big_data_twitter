@@ -1,8 +1,8 @@
 from elasticsearch import Elasticsearch
 from kafka import KafkaConsumer
 import json
-
 import functions as fn
+import os
 
 es = Elasticsearch(hosts=["localhost"], port=9200)
 
@@ -21,6 +21,7 @@ def main():
 
     # set-up a Kafka consumer
     consumer = KafkaConsumer("twitter_stream_" + hashtag, auto_offset_reset="earliest")
+    os.system("curl -XDELETE localhost:9200/main_index")
 
     for msg in consumer:
         dict_data = json.loads(msg.value)
@@ -30,7 +31,7 @@ def main():
 
         # add text & sentiment to es
         es.index(
-            index="tweet_es_" + hashtag + "_index",
+            index="main_index",
             doc_type="test_doc",
             body={
                 "author": dict_data["user"]["screen_name"],
@@ -39,12 +40,13 @@ def main():
                 "author_verified": dict_data["user"]["verified"],
                 "author_account_age": fn.get_age(dict_data["user"]["created_at"]),
                 "created_at": dict_data["created_at"],
-                "date": fn.get_date(dict_data["created_at"]),
+                "@timestamp": fn.get_date(dict_data["created_at"], to_string=False),
                 "message": dict_data["text"],
-                "cleaned_message": fn.clean(dict_data["text"]),
-                "sentiment": tweet_sentiment,
+                "cleaned_text": fn.clean(dict_data["text"]),
+                "sentiment_function": tweet_sentiment,
                 "polarity": polarity,
                 "lang": lang,
+                "source": fn.find_device(dict_data["source"]),
             },
         )
         print(str(tweet))

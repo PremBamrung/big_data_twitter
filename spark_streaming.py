@@ -107,6 +107,7 @@ def process(time, rdd):
         # print("Sentiment done")
         for result in results:
             result["created_at"] = fn.get_date(result["created_at"])
+            result["@timestamp"] = fn.get_date(result["created_at"], to_string=False)
             result["cleaned_text"] = fn.clean(result["text"])
             result["sentiment"] = json.loads(result["sentiment"])
             polarity, tweet_sentiment = fn.get_sentiment(fn.get_tweet(result["text"]))
@@ -114,10 +115,13 @@ def process(time, rdd):
             result["polarity"] = polarity
             result["source"] = fn.find_device(result["source"])
             result["user_age"] = fn.get_age(result["user"]["created_at"])
+            result["nb_characters"] = len(result["text"])
             for topic in top_topics:
                 if topic in result["text"]:
                     result["topic"] = topic
-                    # print(result["topic"])
+            if hashtag in result["text"]:
+                result["topic"] = hashtag
+                # print(result["topic"])
             # print("sentiment loaded")
         to_elastic(results, "main_index", "doc")
         # print("Send to elastic done")
@@ -139,8 +143,9 @@ if __name__ == "__main__":
     conf.setAppName("TwitterStreaming").set("spark.io.compression.codec", "snappy")
     # Create Spark Context to Connect Spark Cluster
     sc = SparkContext(conf=conf)
+    sc.setLogLevel("ERROR")
     # Set the Batch Interval is 10 sec of Streaming Context
-    ssc = StreamingContext(sc, 6)
+    ssc = StreamingContext(sc, 5)
 
     # Create Kafka Stream to Consume Data Comes From Twitter Topic
     # localhost:2181 = Default Zookeeper Consumer Address
@@ -162,7 +167,6 @@ if __name__ == "__main__":
 
     # Print the User tweet counts
     author.pprint()
-    # parsed.foreachRDD(process)
 
     # Start Execution of Streams
     ssc.start()
