@@ -73,6 +73,10 @@ def find_top_topics(n=3,file_name = "twitter_top_trends.json"):
     return top_topics
 
 
+
+
+
+
 def process(time, rdd):
     
     print('enter process function')
@@ -93,7 +97,9 @@ def process(time, rdd):
         print("Sentiment done")
         for result in results:
             
-            result["created_at"] = fn.get_date(result["created_at"])
+            
+            result['character_counts'] = len(result["text"])
+            result["created_at"] = fn.get_date(result["created_at"],to_string=False)
             result["cleaned_text"] = fn.clean(result["text"])
             result["sentiment"] = json.loads(result["sentiment"])
             polarity, tweet_sentiment = fn.get_sentiment(fn.get_tweet(result["text"]))

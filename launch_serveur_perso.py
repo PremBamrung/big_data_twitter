@@ -28,7 +28,7 @@ os.system('pkill -f elasticsearch')
 os.system(elasticsearch)
 time.sleep(7)
 
-#os.system(kibana)
-#time.sleep(7)
+os.system(kibana)
+time.sleep(7)
 
 # zookeeper-server-stop.sh ~/intergiciels/kafka_2.13-2.7.0/config/zookeeper.properties

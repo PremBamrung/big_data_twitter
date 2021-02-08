@@ -26,14 +26,16 @@ auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
 
-def top_trends(place = 'WorldWide'):
+def top_trends(place = 'USA'):
                
     # Trends for Specific Country
     g = geocoder.osm(place) # getting object that has location's latitude and longitude
+    
 
     closest_loc = api.trends_closest(g.lat, g.lng)
     print(closest_loc[0])
-    trends = api.trends_place(closest_loc[0]['woeid'])
+    #trends = api.trends_place(closest_loc[0]['woeid'])
+    trends = api.trends_place(1)
     
 
     for ind,value in enumerate(trends[0]['trends']):
@@ -89,8 +91,9 @@ class KafkaPushListener(StreamListener):
         return True
 
 
-top_trends()
+# top_trends()
 top_topics= find_top_topics()
+#top_topics =["trump"]
 print(top_topics)
 # Twitter Stream Config
 twitter_stream = Stream(auth, KafkaPushListener())
