@@ -1,6 +1,6 @@
 workdir=$(pwd)
 rm -rf ~/logiciels/
-cd 
+cd
 cp .bashrc .bashrc_bak
 rm .bashrc
 head -n -12 .bashrc_bak >> .bashrc

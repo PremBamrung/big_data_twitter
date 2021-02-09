@@ -40,8 +40,6 @@ def top_trends(place="WorldWide"):
         if value["tweet_volume"] == None:
             trends[0]["trends"][ind]["tweet_volume"] = 0
 
-        # print(trends[0]['trends'][ind]['tweet_volume'])
-
     # writing a JSON file that has the latest trends for that location
     with open("twitter_top_trends.json", "w") as wp:
         wp.write(json.dumps(trends, indent=1))
@@ -71,7 +69,6 @@ class KafkaPushListener(StreamListener):
         self.data = 0
 
     # Get Producer that has topic name is Twitter
-    # self.producer = self.client.topics[bytes("twitter")].get_producer()
 
     def on_data(self, data):
         # Producer produces data for consumer
@@ -95,13 +92,12 @@ def main():
     twitter_stream = Stream(auth, KafkaPushListener())
 
     # hashStr = "#" + hashtag
-    # top_topics.append(hashtag)
+    top_topics.append(hashtag)
     print(top_topics)
 
     # Produce Data that has trump hashtag (Tweets)
     # twitter_stream.filter(track=[hashStr])
     twitter_stream.filter(track=top_topics)
-    # twitter_stream.filter(track=["SuperBowl", "OMPSG", "Tigres"])
 
     return None
 

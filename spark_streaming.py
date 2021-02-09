@@ -121,7 +121,6 @@ def process(time, rdd):
                     result["topic"] = topic
             if hashtag in result["text"]:
                 result["topic"] = hashtag
-                # print(result["topic"])
             # print("sentiment loaded")
         to_elastic(results, "main_index", "doc")
         # print("Send to elastic done")
@@ -144,7 +143,7 @@ if __name__ == "__main__":
     # Create Spark Context to Connect Spark Cluster
     sc = SparkContext(conf=conf)
     sc.setLogLevel("ERROR")
-    # Set the Batch Interval is 10 sec of Streaming Context
+    # Set the Batch Interval is 5 sec of Streaming Context
     ssc = StreamingContext(sc, 5)
 
     # Create Kafka Stream to Consume Data Comes From Twitter Topic
@@ -163,7 +162,6 @@ if __name__ == "__main__":
     # Count the number of tweets per User
     author = parsed.map(
         lambda tweet: (tweet["user"]["screen_name"], 1)
-    )  # .reduceByKey(lambda x, y: x + y)
 
     # Print the User tweet counts
     author.pprint()
